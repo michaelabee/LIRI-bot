@@ -118,6 +118,41 @@ var concertThis = function() {
       });
   
   };
+
+  var spotifyThisSong = function(songName) {
+    var nodeArgs = process.argv;
+    var songEntry = "imagine";
+
+    // for (var i = 3; i < nodeArgs.length; i++) {
+  
+    //   if (i > 3 && i < nodeArgs.length) {
+    //     songEntry = songEntry + "+" + nodeArgs[i];
+    //   } else {
+    //     songEntry += nodeArgs[i];
+  
+    //   }
+    // }
+
+    spotify
+  .search({ type: 'track', query: songEntry })
+  .then(function(response) {
+    // console.log(response);
+    // console.log(response.tracks.items[0])
+    var name = response.tracks.items[0].album.artists[0].name;
+    var trackName = response.tracks.items[0].name;
+    var album = response.tracks.items[0].album.name;
+    var preview = response.tracks.items[0].external_urls.spotify;
+    console.log('Artist: ' + name );
+    console.log('Track Name: ' + trackName);
+    console.log('Album: ' + album );
+    console.log('Preview Link: ' + preview)
+
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+  
+    };
   
   var pick = function (caseData, functionData) {
     switch(caseData) {
@@ -130,9 +165,12 @@ var concertThis = function() {
           concertThis();
           break;
 
-          // default: 
-          // console.log("test test test");
-        ////WTF is a default and how does it work?
+        case 'spotify-this-song':
+          spotifyThisSong();
+          break;
+
+        default: 
+        console.log("test test test");
     }
     
 };
