@@ -5,8 +5,9 @@ var Spotify = require('node-spotify-api');
 var axios = require('axios');
 var moment = require('moment');
 var spotify = new Spotify(keys.spotify);
-
 var axios = require("axios");
+
+//------------------------------------------------------------------------------------
 
 var movieThis = function() {
   
@@ -16,9 +17,9 @@ var movieThis = function() {
 // Create an empty variable for holding the movie name
   var movieName = "";
 
-  for (var i = 2; i < nodeArgs.length; i++) {
+  for (var i = 3; i < nodeArgs.length; i++) {
 
-    if (i > 2 && i < nodeArgs.length) {
+    if (i > 3 && i < nodeArgs.length) {
       movieName = movieName + "+" + nodeArgs[i];
     } else {
       movieName += nodeArgs[i];
@@ -65,6 +66,8 @@ var movieThis = function() {
 
 };
 
+//---------------------------------------------------------------------------------------------------------------------------------------------
+
 var concertThis = function() {
   
   // Store all of the arguments in an array
@@ -73,9 +76,9 @@ var concertThis = function() {
   // Create an empty variable for holding the movie name
     var artist = "";
   
-    for (var i = 2; i < nodeArgs.length; i++) {
+    for (var i = 3; i < nodeArgs.length; i++) {
   
-      if (i > 2 && i < nodeArgs.length) {
+      if (i > 3 && i < nodeArgs.length) {
         artist = artist + "+" + nodeArgs[i];
       } else {
         artist += nodeArgs[i];
@@ -116,5 +119,27 @@ var concertThis = function() {
   
   };
   
-concertThis();
+  var pick = function (caseData, functionData) {
+    switch(caseData) {
+        case 'movie-this':
+          movieThis();
+          break;
+      
+
+        case 'concert-this':
+          concertThis();
+          break;
+
+          // default: 
+          // console.log("test test test");
+        ////WTF is a default and how does it work?
+    }
+    
+};
+
+var runThis = function (argOne, argTwo) {
+  pick(argOne, argTwo);
+};
+
+runThis(process.argv[2], process.argv[3]);
 
