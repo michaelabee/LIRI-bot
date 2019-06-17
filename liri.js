@@ -107,11 +107,10 @@ var concertThis = function() {
           console.log("---------------Status---------------");
           console.log(error.response.headers);
         } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an object that comes back with details pertaining to the error that occurred.
+          
           console.log(error.request);
         } else {
-          // Something happened in setting up the request that triggered an Error
+          
           console.log("Error", error.message);
         }
         console.log(error.config);
@@ -119,26 +118,29 @@ var concertThis = function() {
   
   };
 
+//----------------------------------------------------------------------------------------------------------------------//
+
   var spotifyThisSong = function(songName) {
     var nodeArgs = process.argv;
-    var songEntry = "imagine";
+    var songEntry = "";
 
-    // for (var i = 3; i < nodeArgs.length; i++) {
+    for (var i = 3; i < nodeArgs.length; i++) {
   
-    //   if (i > 3 && i < nodeArgs.length) {
-    //     songEntry = songEntry + "+" + nodeArgs[i];
-    //   } else {
-    //     songEntry += nodeArgs[i];
-  
-    //   }
-    // }
+      if (i > 3 && i < nodeArgs.length) {
+        songEntry = songEntry + " " + nodeArgs[i];
+      } else {
+        songEntry += nodeArgs[i];
+        
+      }
+      
+    };
 
-    spotify
+  spotify
   .search({ type: 'track', query: songEntry })
   .then(function(response) {
     // console.log(response);
-    // console.log(response.tracks.items[0])
-    var name = response.tracks.items[0].album.artists[0].name;
+    try{
+      var name = response.tracks.items[0].album.artists[0].name;
     var trackName = response.tracks.items[0].name;
     var album = response.tracks.items[0].album.name;
     var preview = response.tracks.items[0].external_urls.spotify;
@@ -146,6 +148,9 @@ var concertThis = function() {
     console.log('Track Name: ' + trackName);
     console.log('Album: ' + album );
     console.log('Preview Link: ' + preview)
+    } catch (error) {
+      console.log('error getting track information', error);
+    }
 
   })
   .catch(function(err) {
@@ -153,6 +158,10 @@ var concertThis = function() {
   });
   
     };
+
+
+//------------------------------------------------------------------------------------------------//
+//----------------------------------------RUN LIRI BELOW------------------------------------------//
   
   var pick = function (caseData, functionData) {
     switch(caseData) {
@@ -160,7 +169,6 @@ var concertThis = function() {
           movieThis();
           break;
       
-
         case 'concert-this':
           concertThis();
           break;
@@ -170,7 +178,7 @@ var concertThis = function() {
           break;
 
         default: 
-        console.log("test test test");
+        console.log("LIRI doesn't know that!");
     }
     
 };
