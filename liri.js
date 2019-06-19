@@ -8,31 +8,32 @@ var fs = require('fs');
 var spotify = new Spotify(keys.spotify);
 var axios = require("axios");
 
+var nodeArgs = process.argv;
+var searchTerm = "";
+
+    for (var i = 3; i < nodeArgs.length; i++) {
+  
+      if (i > 3 && i < nodeArgs.length) {
+        searchTerm = searchTerm + " " + nodeArgs[i];
+      } else {
+        searchTerm += nodeArgs[i];
+        
+      }
+      
+    };
+
 //------------------------------------------------------------------------------------
 
 var movieThis = function(functionData) {
-  
-  var nodeArgs = process.argv;
-  var movieName = "";
-
-  for (var i = 3; i < nodeArgs.length; i++) {
-
-    if (i > 3 && i < nodeArgs.length) {
-      movieName = movieName + "+" + nodeArgs[i];
-    } else {
-      movieName += nodeArgs[i];
-
-    }
-  }
 
   //sets a default search of "Mr. Nobody"
-  if (typeof movieName === typeof undefined || movieName === "") {
-    movieName = "Mr. Nobody";
+  if (typeof searchTerm === typeof undefined || searchTerm === "") {
+    searchTerm = "Mr. Nobody";
   }
 
 
 // Then run a request with axios to the OMDB API with the movie specified
-  var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+  var queryUrl = "http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&apikey=trilogy";
 
   axios.get(queryUrl).then(
     function(response) {
@@ -74,20 +75,8 @@ var movieThis = function(functionData) {
 
 var concertThis = function(functionData) {
   
-    var nodeArgs = process.argv;
-    var artist = "";
-  
-    for (var i = 3; i < nodeArgs.length; i++) {
-  
-      if (i > 3 && i < nodeArgs.length) {
-        artist = artist + "+" + nodeArgs[i];
-      } else {
-        artist += nodeArgs[i];
-  
-      }
-    }
   // Then run a request with axios to the Bands in Town API with the movie specified
-    var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+    var queryUrl = "https://rest.bandsintown.com/artists/" + searchTerm + "/events?app_id=codingbootcamp";
   
     axios.get(queryUrl).then(
       function(response) {
@@ -120,34 +109,18 @@ var concertThis = function(functionData) {
 
 //----------------------------------------------------------------------------------------------------------------------//
 
-  var spotifyThisSong = function(songName) {
-    var nodeArgs = process.argv;
-    var songEntry = "";
-
-    for (var i = 3; i < nodeArgs.length; i++) {
-  
-      if (i > 3 && i < nodeArgs.length) {
-        songEntry = songEntry + " " + nodeArgs[i];
-      } else {
-        songEntry += nodeArgs[i];
-        
-      }
-      
-    };
+  var spotifyThisSong = function(functionData) {
+    
 
   spotify
-  .search({ type: 'track', query: songEntry })
+  .search({ type: 'track', query: searchTerm })
   .then(function(response) {
-    // console.log(response);
+
     try{
-      var name = response.tracks.items[0].album.artists[0].name;
-    var trackName = response.tracks.items[0].name;
-    var album = response.tracks.items[0].album.name;
-    var preview = response.tracks.items[0].external_urls.spotify;
-    console.log('Artist: ' + name );
-    console.log('Track Name: ' + trackName);
-    console.log('Album: ' + album );
-    console.log('Preview Link: ' + preview)
+    console.log('Artist: ' + response.tracks.items[0].album.artists[0].name );
+    console.log('Track Name: ' + response.tracks.items[0].name);
+    console.log('Album: ' + response.tracks.items[0].album.name);
+    console.log('Preview Link: ' + response.tracks.items[0].external_urls.spotify)
     } catch (error) {
       console.log('error getting track information', error);
     }
