@@ -74,7 +74,6 @@ var movieThis = function(functionData) {
 
 var concertThis = function(functionData) {
   
- 
     var nodeArgs = process.argv;
     var artist = "";
   
@@ -165,15 +164,6 @@ var dataArr;
 
 var doWhatItSays = function() {
 
-  readFile().then(function(data) {
-    console.log(data);
-    runThis(data[0], data[1]);
-  });
-  
-}
-function readFile () {
-  return new Promise (function (resolve, reject){
-
     fs.readFile("random.txt", "utf8", function(error, data) {
       
       if (error) {
@@ -181,31 +171,17 @@ function readFile () {
       }
       
       dataArr = data.split(",");
-      console.log(dataArr);
-      resolve(dataArr);
-      // processFile();
+      console.log(dataArr); 
+      pick(dataArr[0], dataArr[1]);  
       
     });
-  })
-    
-}
-
-function processFile () {
-  console.log('process file', dataArr);
-//   if (dataArr.length === 2) {
-//     pick(dataArr[0], dataArr[1]);
-// console.log('dataArr[1]', dataArr);
-  
-//   } else if (dataArr.length === 1){
-//     pick(dataArr[0]);
-  // };
-};
+  };
 
 //------------------------------------------------------------------------------------------------//
 //----------------------------------------RUN LIRI BELOW------------------------------------------//
   
   var pick = function (caseData, functionData) {
-    console.log("do what it says", caseData, functionData);
+
     switch(caseData) {
         case 'movie-this':
           movieThis(functionData);
