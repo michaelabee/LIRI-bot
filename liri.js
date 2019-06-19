@@ -25,14 +25,14 @@ var searchTerm = "";
 //------------------------------------------------------------------------------------
 
 var movieThis = function(functionData) {
-
   //sets a default search of "Mr. Nobody"
+  searchTerm = functionData;
   if (typeof searchTerm === typeof undefined || searchTerm === "") {
     searchTerm = "Mr. Nobody";
   }
 
 
-// Then run a request with axios to the OMDB API with the movie specified
+//run a request with axios to the OMDB API with the movie specified
   var queryUrl = "http://www.omdbapi.com/?t=" + searchTerm + "&y=&plot=short&apikey=trilogy";
 
   axios.get(queryUrl).then(
@@ -42,7 +42,7 @@ var movieThis = function(functionData) {
       console.log("Release Year: " + response.data.Year);
       console.log("Cast: " + response.data.Actors);
       console.log("IMDB Rating: " + response.data.imdbRating);
-      // console.log("Rotten Tomatoes Rating: " + response.data.Ratings[0][1].value);
+      console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
       console.log("Country: " + response.data.Country);
       console.log("Language: " + response.data.Language);
       console.log("Plot: " + response.data.Plot);
@@ -50,8 +50,7 @@ var movieThis = function(functionData) {
     })
     .catch(function(error) {
       if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
+     
         console.log("---------------Data---------------");
         console.log(error.response.data);
         console.log("---------------Status---------------");
@@ -59,11 +58,10 @@ var movieThis = function(functionData) {
         console.log("---------------Status---------------");
         console.log(error.response.headers);
       } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an object that comes back with details pertaining to the error that occurred.
+  
         console.log(error.request);
       } else {
-        // Something happened in setting up the request that triggered an Error
+       
         console.log("Error", error.message);
       }
       console.log(error.config);
@@ -74,8 +72,9 @@ var movieThis = function(functionData) {
 //---------------------------------------------------------------------------------------------------------------------------------------------
 
 var concertThis = function(functionData) {
+  searchTerm = functionData;
   
-  // Then run a request with axios to the Bands in Town API with the movie specified
+  // run a request with axios to the Bands in Town API with the movie specified
     var queryUrl = "https://rest.bandsintown.com/artists/" + searchTerm + "/events?app_id=codingbootcamp";
   
     axios.get(queryUrl).then(
@@ -110,7 +109,7 @@ var concertThis = function(functionData) {
 //----------------------------------------------------------------------------------------------------------------------//
 
   var spotifyThisSong = function(functionData) {
-    
+  searchTerm = functionData;
 
   spotify
   .search({ type: 'track', query: searchTerm })
@@ -142,11 +141,12 @@ var doWhatItSays = function() {
       if (error) {
         return console.log(error);
       }
-      
+      console.log('doWhatItSays()', data);
       dataArr = data.split(",");
       console.log(dataArr); 
-      pick(dataArr[0], dataArr[1]);  
-      
+
+      pick(dataArr[0],dataArr[1]);
+
     });
   };
 
@@ -170,7 +170,6 @@ var doWhatItSays = function() {
 
         case 'do-what-it-says':
           doWhatItSays();
-          
           break;
 
         default: 
