@@ -22,7 +22,7 @@ var searchTerm = "";
       
     };
 
-//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------//
 
 var movieThis = function(functionData) {
   //sets a default search of "Mr. Nobody"
@@ -80,9 +80,9 @@ var concertThis = function(functionData) {
     axios.get(queryUrl).then(
       function(response) {
         console.log("---------------------------------------");
-        console.log(response.data[0].venue.city);
-        console.log(response.data[0].venue.name);
-        console.log(moment(response.data[0].datetime).format("MM/DD/YYYY"));
+        console.log("City: " + response.data[0].venue.city);
+        console.log("Venue: " + response.data[0].venue.name);
+        console.log("When: " + moment(response.data[0].datetime).format("MM/DD/YYYY"));
         console.log("---------------------------------------");
       })
       .catch(function(error) {
@@ -135,16 +135,15 @@ var concertThis = function(functionData) {
 var dataArr;
 
 var doWhatItSays = function() {
-
+//Grabs information from random.txt
     fs.readFile("random.txt", "utf8", function(error, data) {
       
       if (error) {
         return console.log(error);
       }
-      console.log('doWhatItSays()', data);
+      //puts that information into an array
       dataArr = data.split(",");
-      console.log(dataArr); 
-
+      //feeds the information to the pick function
       pick(dataArr[0],dataArr[1]);
 
     });
@@ -154,7 +153,7 @@ var doWhatItSays = function() {
 //----------------------------------------RUN LIRI BELOW------------------------------------------//
   
   var pick = function (caseData, functionData) {
-
+    //decides what function to run based on what the user enters 
     switch(caseData) {
         case 'movie-this':
           movieThis(functionData);
