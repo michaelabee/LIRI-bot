@@ -10,12 +10,9 @@ var axios = require("axios");
 
 //------------------------------------------------------------------------------------
 
-var movieThis = function() {
+var movieThis = function(functionData) {
   
-// Store all of the arguments in an array
   var nodeArgs = process.argv;
-
-// Create an empty variable for holding the movie name
   var movieName = "";
 
   for (var i = 3; i < nodeArgs.length; i++) {
@@ -27,6 +24,12 @@ var movieThis = function() {
 
     }
   }
+
+  //sets a default search of "Mr. Nobody"
+  if (typeof movieName === typeof undefined || movieName === "") {
+    movieName = "Mr. Nobody";
+  }
+
 
 // Then run a request with axios to the OMDB API with the movie specified
   var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
@@ -69,12 +72,10 @@ var movieThis = function() {
 
 //---------------------------------------------------------------------------------------------------------------------------------------------
 
-var concertThis = function() {
+var concertThis = function(functionData) {
   
-  // Store all of the arguments in an array
+ 
     var nodeArgs = process.argv;
-  
-  // Create an empty variable for holding the movie name
     var artist = "";
   
     for (var i = 3; i < nodeArgs.length; i++) {
@@ -86,7 +87,6 @@ var concertThis = function() {
   
       }
     }
-  
   // Then run a request with axios to the Bands in Town API with the movie specified
     var queryUrl = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
   
@@ -161,51 +161,68 @@ var concertThis = function() {
     };
   
 //--------------------------------------------------------------------------------------------------------------//
+var dataArr;
 
 var doWhatItSays = function() {
 
-  fs.readFile("random.txt", "utf8", function(error, data) {
-
-    // If the code experiences any errors it will log the error to the console.
-    if (error) {
-      return console.log(error);
-    }
-  
-    // We will then print the contents of data
+  readFile().then(function(data) {
     console.log(data);
-  
-    // Then split it by commas (to make it more readable)
-    var dataArr = data.split(",");
-  
-    // We will then re-display the content as an array for later use.
-    console.log(dataArr);
-  
+    runThis(data[0], data[1]);
   });
+  
+}
+function readFile () {
+  return new Promise (function (resolve, reject){
 
+    fs.readFile("random.txt", "utf8", function(error, data) {
+      
+      if (error) {
+        return console.log(error);
+      }
+      
+      dataArr = data.split(",");
+      console.log(dataArr);
+      resolve(dataArr);
+      // processFile();
+      
+    });
+  })
+    
+}
+
+function processFile () {
+  console.log('process file', dataArr);
+//   if (dataArr.length === 2) {
+//     pick(dataArr[0], dataArr[1]);
+// console.log('dataArr[1]', dataArr);
+  
+//   } else if (dataArr.length === 1){
+//     pick(dataArr[0]);
+  // };
 };
-
 
 //------------------------------------------------------------------------------------------------//
 //----------------------------------------RUN LIRI BELOW------------------------------------------//
   
   var pick = function (caseData, functionData) {
+    console.log("do what it says", caseData, functionData);
     switch(caseData) {
         case 'movie-this':
-          movieThis();
+          movieThis(functionData);
           break;
       
         case 'concert-this':
-          concertThis();
+          concertThis(functionData);
           break;
 
         case 'spotify-this-song':
-          spotifyThisSong();
+          spotifyThisSong(functionData);
           break;
 
         case 'do-what-it-says':
           doWhatItSays();
+          
           break;
-
 
         default: 
         console.log("LIRI doesn't know that!");
